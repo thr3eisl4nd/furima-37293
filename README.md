@@ -48,7 +48,7 @@
 | order                 | references | foreign_key: true |
 
 ### Association
-- has_one :order
+- belongs_to :order
 
 ## ordersテーブル
 
@@ -59,5 +59,5 @@
 
 ### Association
 - belongs_to :user
-- has_one :item
+- belongs_to :item
 - has_one :address
