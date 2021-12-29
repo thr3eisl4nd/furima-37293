@@ -30,7 +30,7 @@
 | delivery_charge       | string     | null: false       |
 | shipment_source       | string     | null: false       |
 | shipment_days         | string     | null: false       |
-| price                 | references | foreign_key: true |
+| price                 | string     | foreign_key: true |
 | user                  | references | foreign_key: true |
 
 ### Association
@@ -58,9 +58,9 @@
 
 | Column                | Type       | Options                        |
 | --------------------- | ---------- | ------------------------------ |
-| item                  | string     | null: false, foreign_key: true |
-| user                  | string     | null: false, foreign_key: true |
-| purchase_date         | date       | null: false                    |
+| item                  | references | null: false, foreign_key: true |
+| user                  | references | null: false, foreign_key: true |
+| purchase_date         | datetime   | null: false                    |
 
 ### Association
 - belongs_to :user
