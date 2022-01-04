@@ -5,12 +5,11 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   
   validates :nickname, presence: true
-  validates :email, presence: true, format: { with: /@+/ }
   PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?[\d])[a-z\d]{6,}+\z/i.freeze
-  validates_format_of :password, with: PASSWORD_REGEX, confirmation: true, allow_blank: true
-  validates :family_name, presence: true, format: { with: /\A[ぁ-んァ-ヶ一-龥々ー]+\z/, allow_blank: true }
-  validates :first_name, presence: true, format: { with: /\A[ぁ-んァ-ヶ一-龥々ー]+\z/, allow_blank: true }
-  validates :phonetic_family_name, presence: true, format: { with: /\A[ァ-ヴー]+\z/, allow_blank: true }
-  validates :phonetic_first_name, presence: true, format: { with: /\A[ァ-ヴー]+\z/, allow_blank: true }
+  validates_format_of :password, with: PASSWORD_REGEX, message: "is invalid. Include both letters and numbers."
+  validates :family_name, presence: true, format: { with: /\A[ぁ-んァ-ヶ一-龥々ー]+\z/, message: "is invalid. Input full-width characters." }
+  validates :first_name, presence: true, format: { with: /\A[ぁ-んァ-ヶ一-龥々ー]+\z/, message: "is invalid. Input full-width characters." }
+  validates :phonetic_family_name, presence: true, format: { with: /\A[ァ-ヴー]+\z/, message: "is invalid. Input full-width katakana characters." }
+  validates :phonetic_first_name, presence: true, format: { with: /\A[ァ-ヴー]+\z/, message: "is invalid. Input full-width katakana characters." }
   validates :birth_date, presence: true
 end

@@ -48,40 +48,50 @@ RSpec.describe User, type: :model do
           @user.valid?
           expect(@user.errors.full_messages).to include("Password is too short (minimum is 6 characters)")
         end
-        it 'passwordは半角英数字混合でないと登録できない' do
+        it 'passwordが半角数字のみの場合は登録できない' do
+          @user.password = '123456'
+          @user.valid?
+          expect(@user.errors.full_messages).to include("Password is invalid. Include both letters and numbers.")
+        end
+        it 'passwordが半角英字のみの場合は登録できない' do
           @user.password = 'abcdef'
           @user.valid?
-          expect(@user.errors.full_messages).to include("Password is invalid")
+          expect(@user.errors.full_messages).to include("Password is invalid. Include both letters and numbers.")
+        end
+        it 'passwordが全角の場合は登録できない' do
+          @user.password = '１２３４５ａ'
+          @user.valid?
+          expect(@user.errors.full_messages).to include("Password is invalid. Include both letters and numbers.")
         end
         it '名字(全角)がないと登録できない' do
           @user.family_name = 'Tanaka'
           @user.valid?
-          expect(@user.errors.full_messages).to include("Family name is invalid")
+          expect(@user.errors.full_messages).to include("Family name is invalid. Input full-width characters.")
         end
         it '名前(全角)がないと登録できない' do
           @user.first_name = 'Taro'
           @user.valid?
-          expect(@user.errors.full_messages).to include("First name is invalid")
+          expect(@user.errors.full_messages).to include("First name is invalid. Input full-width characters.")
         end
         it '名字カナ(全角)がないと登録できない' do
           @user.phonetic_family_name = ''
           @user.valid?
-          expect(@user.errors.full_messages).to include("Phonetic family name can't be blank")
+          expect(@user.errors.full_messages).to include("Phonetic family name is invalid. Input full-width katakana characters.")
         end
         it '名前カナ(全角)がないと登録できない' do
           @user.phonetic_first_name = ''
           @user.valid?
-          expect(@user.errors.full_messages).to include("Phonetic first name can't be blank")
+          expect(@user.errors.full_messages).to include("Phonetic first name is invalid. Input full-width katakana characters.")
         end
         it '名字カナ(全角)は全角カタカナでの入力がないと登録できない' do
           @user.phonetic_family_name = 'ﾀﾅｶ'
           @user.valid?
-          expect(@user.errors.full_messages).to include("Phonetic family name is invalid")
+          expect(@user.errors.full_messages).to include("Phonetic family name is invalid. Input full-width katakana characters.")
         end
         it '名前カナ(全角)は全角カタカナでの入力がないと登録できない' do
           @user.phonetic_first_name = 'ﾀﾛｳ'
           @user.valid?
-          expect(@user.errors.full_messages).to include("Phonetic first name is invalid")
+          expect(@user.errors.full_messages).to include("Phonetic first name is invalid. Input full-width katakana characters.")
         end
         it '生年月日がないと登録できない' do
           @user.birth_date = ''
