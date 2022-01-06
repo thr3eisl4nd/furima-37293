@@ -27,37 +27,42 @@ RSpec.describe Item, type: :model do
         expect(@item.errors.full_messages).to include("Description can't be blank")
       end
       it 'カテゴリーの情報がないと出品できない' do
-        @item.category_id = ''
+        @item.category_id = 1
         @item.valid?
-        expect(@item.errors.full_messages).to include("Category can't be blank")
+        expect(@item.errors.full_messages).to include("Category can‘t be blank")
       end
       it '商品の情報がないと出品できない' do
-        @item.condition_id = ''
+        @item.condition_id = 1
         @item.valid?
-        expect(@item.errors.full_messages).to include("Condition can't be blank")
+        expect(@item.errors.full_messages).to include("Condition can‘t be blank")
       end
       it '配送料の負担の情報がないと出品できない' do
-        @item.delivery_charge_id = ''
+        @item.delivery_charge_id = 1
         @item.valid?
-        expect(@item.errors.full_messages).to include("Delivery charge can't be blank")
+        expect(@item.errors.full_messages).to include("Delivery charge can‘t be blank")
       end
       it '発送元の地域の情報がないと出品できない' do
-        @item.shipment_source_id = ''
+        @item.shipment_source_id = 1
         @item.valid?
-        expect(@item.errors.full_messages).to include("Shipment source can't be blank")
+        expect(@item.errors.full_messages).to include("Shipment source can‘t be blank")
       end
       it '発送までの日数の情報がないと出品できない' do
-        @item.shipment_days_id = ''
+        @item.shipment_days_id = 1
         @item.valid?
-        expect(@item.errors.full_messages).to include("Shipment days can't be blank")
+        expect(@item.errors.full_messages).to include("Shipment days can‘t be blank")
       end
       it '価格の情報がないと出品できない' do
         @item.price = ''
         @item.valid?
         expect(@item.errors.full_messages).to include("Price can't be blank")
       end
-      it '価格は¥300~¥9,999,999の間でないと出品できない' do
+      it '価格は¥300より小さいと出品できない' do
         @item.price = '299'
+        @item.valid?
+        expect(@item.errors.full_messages).to include('Price is out of setting range')
+      end
+      it '価格は¥9,999,999より大きいと出品できない' do
+        @item.price = '10000000'
         @item.valid?
         expect(@item.errors.full_messages).to include('Price is out of setting range')
       end
@@ -65,6 +70,11 @@ RSpec.describe Item, type: :model do
         @item.price = '３００'
         @item.valid?
         expect(@item.errors.full_messages).to include('Price is invalid. Input half-width characters')
+      end
+      it 'userが紐付いていないと出品できない' do
+        @item.user = nil
+        @item.valid?
+        expect(@item.errors.full_messages).to include('User must exist')
       end
     end
   end
