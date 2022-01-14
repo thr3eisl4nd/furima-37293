@@ -60,6 +60,11 @@ RSpec.describe OrderAddress, type: :model do
         @order_address.valid?
         expect(@order_address.errors.full_messages).to include('Phone number Input only number')
       end
+      it '電話番号は半角数字以外が含まれている場合は購入できない' do
+        @order_address.phone_number = '080-1234-5678'
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include('Phone number Input only number')
+      end
       it 'user_id(購入者)が空では登録出来ないこと' do
         @order_address.user_id = ''
         @order_address.valid?
